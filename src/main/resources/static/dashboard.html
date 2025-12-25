@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVNFCZ33G8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-RVNFCZ33G8');
+    </script>
+    <meta charset="UTF-8">
+    <title>Dashboard - Rações & Cia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <style>
+    body { font-family: 'Roboto', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { color: #2c3e50; margin: 0; }
+    .header p { color: #7f8c8d; }
+
+    /* CARDS (Indicadores) */
+    .kpi-container { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
+    .kpi-card {
+        background: white; padding: 20px; border-radius: 10px; width: 200px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid #ddd;
+    }
+    .kpi-titulo { font-size: 14px; color: #7f8c8d; font-weight: bold; text-transform: uppercase; }
+    .kpi-valor { font-size: 36px; font-weight: bold; color: #2c3e50; margin: 10px 0; }
+
+    /* Cores dos Cards */
+    .card-blue { border-color: #3498db; }
+    .card-green { border-color: #2ecc71; }
+    .card-red { border-color: #e74c3c; }
+
+    /* GRÁFICOS */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1200px; margin: 0 auto; }
+    .chart-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+    /* Botão Voltar */
+    .btn-voltar { display: inline-block; padding: 10px 20px; background: #34495e; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="btn-voltar">⬅ Voltar para Gestão</a>
+
+<div class="header">
+    <h1>📊 Dashboard Analítico</h1>
+    <p>Visão geral do estoque e patrimônio</p>
+</div>
+
+<div class="kpi-container">
+    <div class="kpi-card card-blue">
+        <div class="kpi-titulo">Total de Produtos</div>
+        <div class="kpi-valor" id="totalProdutos">0</div>
+    </div>
+    <div class="kpi-card card-green">
+        <div class="kpi-titulo">Valor em Estoque</div>
+        <div class="kpi-valor" id="valorTotal">R$ 0</div>
+    </div>
+    <div class="kpi-card card-red">
+        <div class="kpi-titulo">Estoque Baixo</div>
+        <div class="kpi-valor" id="estoqueBaixo">0</div>
+        <small style="color: #e74c3c">Menos de 15 un.</small>
+    </div>
+</div>
+
+<div class="charts-grid">
+    <div class="chart-box">
+        <h3 style="text-align: center; color: #555;">📦 Quantidade em Estoque (Top 5)</h3>
+        <canvas id="graficoEstoque"></canvas>
+    </div>
+    <div class="chart-box">
+        <h3 style="text-align: center; color: #555;">💰 Preço dos Produtos</h3>
+        <canvas id="graficoPreco"></canvas>
+    </div>
+</div>
+
+<script>
+    // Função Principal que carrega tudo
+    async function carregarDashboard() {
+        try {
+            // 1. Busca os dados no Java
+            const resposta = await fetch('/produtos');
+            const produtos = await resposta.json();
+
+            // 2. Cálculos para os Cards (KPIs)
+            const totalItens = produtos.length;
+
+            // Soma: (Preço * Quantidade em Estoque) de cada produto
+            const valorPatrimonio = produtos.reduce((soma, p) => soma + (p.preco * p.estoque), 0);
+
+            // Filtro: Produtos com menos de 15 unidades
+            const produtosBaixoEstoque = produtos.filter(p => p.estoque < 15).length;
+
+            // 3. Atualiza a Tela (DOM)
+            document.getElementById('totalProdutos').innerText = totalItens;
+            document.getElementById('valorTotal').innerText = valorPatrimonio.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('estoqueBaixo').innerText = produtosBaixoEstoque;
+
+            // 4. Prepara dados para os Gráficos
+            // Vamos pegar só os 5 primeiros para o gráfico não ficar gigante
+            const top5 = produtos.slice(0, 5);
+            const nomes = top5.map(p => p.nomeComercial.split(' ')[0] + ' ' + p.marca); // Pega nome curto
+            const estoques = top5.map(p => p.estoque);
+            const precos = top5.map(p => p.preco);
+
+            // --- GRÁFICO 1: BARRAS (Estoque) ---
+            new Chart(document.getElementById('graficoEstoque'), {
+                type: 'bar',
+                data: {
+                    labels: nomes,
+                    datasets: [{
+                        label: 'Unidades',
+                        data: estoques,
+                        backgroundColor: '#3498db',
+                        borderRadius: 5
+                    }]
+                }
+            });
+
+            // --- GRÁFICO 2: DOUGHNUT (Preços) ---
+            new Chart(document.getElementById('graficoPreco'), {
+                type: 'doughnut',
+                data: {
+                    labels: nomes,
+                    datasets: [{
+                        label: 'Preço (R$)',
+                        data: precos,
+                        backgroundColor: ['#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e']
+                    }]
+                }
+            });
+
+        } catch (erro) {
+            console.error("Erro ao carregar dashboard:", erro);
+            alert("Erro ao buscar dados. O servidor Java está rodando?");
+        }
+    }
+
+    // Inicia assim que abre a tela
+    carregarDashboard();
+</script>
+
+</body>
+</html>
