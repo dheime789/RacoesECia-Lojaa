@@ -1,147 +1,245 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVNFCZ33G8"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-RVNFCZ33G8');
-    </script>
     <meta charset="UTF-8">
-    <title>Dashboard - Rações & Cia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <style>
-    body { font-family: 'Roboto', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Rações & Cia</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --cor-principal: #b30000; /* Vermelho Marca */
+            --cor-fundo: #f0f2f5;    /* Cinza clarinho profissional */
+            --cor-card: #ffffff;
+        }
 
-    .header { text-align: center; margin-bottom: 30px; }
-    .header h1 { color: #2c3e50; margin: 0; }
-    .header p { color: #7f8c8d; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--cor-fundo); display: flex; height: 100vh; }
 
-    /* CARDS (Indicadores) */
-    .kpi-container { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-    .kpi-card {
-        background: white; padding: 20px; border-radius: 10px; width: 200px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; border-bottom: 4px solid #ddd;
-    }
-    .kpi-titulo { font-size: 14px; color: #7f8c8d; font-weight: bold; text-transform: uppercase; }
-    .kpi-valor { font-size: 36px; font-weight: bold; color: #2c3e50; margin: 10px 0; }
+        /* SIDEBAR (Menu Lateral) */
+        .sidebar { width: 250px; background: linear-gradient(180deg, #800000 0%, #b30000 100%); color: white; display: flex; flex-direction: column; padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 24px; font-weight: bold; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+        .menu-item { padding: 15px; cursor: pointer; border-radius: 10px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .menu-item:hover, .menu-item.ativo { background-color: rgba(255,255,255,0.2); }
+        .menu-item a { text-decoration: none; color: white; font-weight: 500; }
 
-    /* Cores dos Cards */
-    .card-blue { border-color: #3498db; }
-    .card-green { border-color: #2ecc71; }
-    .card-red { border-color: #e74c3c; }
+        /* CONTEÚDO PRINCIPAL */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .titulo-pag { font-size: 28px; color: #333; font-weight: bold; }
 
-    /* GRÁFICOS */
-    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1200px; margin: 0 auto; }
-    .chart-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        /* CARDS DE RESUMO (KPIs) */
+        .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { background: var(--cor-card); padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--cor-principal); display: flex; flex-direction: column; }
+        .kpi-titulo { font-size: 14px; color: #777; font-weight: bold; text-transform: uppercase; }
+        .kpi-valor { font-size: 32px; color: #333; font-weight: bold; margin-top: 10px; }
+        .kpi-icon { align-self: flex-end; margin-top: -40px; background: #ffebee; color: var(--cor-principal); padding: 10px; border-radius: 50%; }
 
-    /* Botão Voltar */
-    .btn-voltar { display: inline-block; padding: 10px 20px; background: #34495e; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }
-</style>
+        /* TABELA E FORMULÁRIO */
+        .painel-branco { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .form-cadastro { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 15px; margin-bottom: 25px; background: #f9f9f9; padding: 20px; border-radius: 10px; border: 1px solid #eee; align-items: end; }
+
+        input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; width: 100%; box-sizing: border-box; }
+        input:focus { border-color: var(--cor-principal); }
+
+        button.btn-add { background-color: var(--cor-principal); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; height: 42px; }
+        button.btn-add:hover { background-color: #900000; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 15px; color: #555; border-bottom: 2px solid #eee; font-size: 14px; }
+        td { padding: 15px; border-bottom: 1px solid #eee; color: #333; font-weight: 500; }
+        .btn-delete { background-color: white; border: 1px solid #ffcccc; color: red; padding: 8px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .btn-delete:hover { background-color: #ffebee; }
+
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 20px; }
+            .menu-item span { display: none; } /* Esconde texto no mobile */
+            .form-cadastro { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-<a href="index.html" class="btn-voltar">⬅ Voltar para Gestão</a>
-
-<div class="header">
-    <h1>📊 Dashboard Analítico</h1>
-    <p>Visão geral do estoque e patrimônio</p>
-</div>
-
-<div class="kpi-container">
-    <div class="kpi-card card-blue">
-        <div class="kpi-titulo">Total de Produtos</div>
-        <div class="kpi-valor" id="totalProdutos">0</div>
+<div class="sidebar">
+    <div class="logo">
+        <span class="material-icons">pets</span> R&C Admin
     </div>
-    <div class="kpi-card card-green">
-        <div class="kpi-titulo">Valor em Estoque</div>
-        <div class="kpi-valor" id="valorTotal">R$ 0</div>
+    <div class="menu-item ativo">
+        <span class="material-icons">dashboard</span>
+        <span style="margin-left: 10px;">Visão Geral</span>
     </div>
-    <div class="kpi-card card-red">
-        <div class="kpi-titulo">Estoque Baixo</div>
-        <div class="kpi-valor" id="estoqueBaixo">0</div>
-        <small style="color: #e74c3c">Menos de 15 un.</small>
+    <div class="menu-item">
+        <a href="/" target="_blank" style="display:flex; align-items:center;">
+            <span class="material-icons">storefront</span>
+            <span style="margin-left: 10px;">Ver Loja</span>
+        </a>
     </div>
 </div>
 
-<div class="charts-grid">
-    <div class="chart-box">
-        <h3 style="text-align: center; color: #555;">📦 Quantidade em Estoque (Top 5)</h3>
-        <canvas id="graficoEstoque"></canvas>
+<div class="main-content">
+    <div class="header-top">
+        <div class="titulo-pag">Dashboard Analítico</div>
+        <div style="font-size: 14px; color: #777;">Bem-vindo, Gestor</div>
     </div>
-    <div class="chart-box">
-        <h3 style="text-align: center; color: #555;">💰 Preço dos Produtos</h3>
-        <canvas id="graficoPreco"></canvas>
+
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-titulo">Total de Produtos</div>
+            <div class="kpi-valor" id="kpiTotal">0</div>
+            <div class="kpi-icon"><span class="material-icons">inventory_2</span></div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-titulo">Valor em Estoque</div>
+            <div class="kpi-valor" id="kpiValor">R$ 0,00</div>
+            <div class="kpi-icon"><span class="material-icons">attach_money</span></div>
+        </div>
+        <div class="kpi-card" style="border-left-color: #ff9800;">
+            <div class="kpi-titulo">Estoque Baixo</div>
+            <div class="kpi-valor" id="kpiBaixo">0</div>
+            <div class="kpi-icon" style="color: #ff9800; background: #fff3e0;"><span class="material-icons">warning</span></div>
+        </div>
+    </div>
+
+    <div class="painel-branco">
+        <h3 style="margin-top:0; color: #444;">📦 Cadastrar Novo Produto</h3>
+
+        <div class="form-cadastro">
+            <div><label style="font-size:12px; font-weight:bold; color:#777;">Nome do Produto</label>
+                <input type="text" id="nome" placeholder="Ex: Ração Golden 15kg"></div>
+
+            <div><label style="font-size:12px; font-weight:bold; color:#777;">Preço (R$)</label>
+                <input type="number" id="preco" placeholder="0.00" step="0.01"></div>
+
+            <div><label style="font-size:12px; font-weight:bold; color:#777;">Qtd. Estoque</label>
+                <input type="number" id="estoque" placeholder="0"></div>
+
+            <div><label style="font-size:12px; font-weight:bold; color:#777;">Link Foto (Opcional)</label>
+                <input type="text" id="foto" placeholder="http://..."></div>
+
+            <button class="btn-add" onclick="adicionarProduto()">+ SALVAR</button>
+        </div>
+
+        <h3 style="color: #444; margin-bottom: 15px;">Estoque Atual</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>PRODUTO</th>
+                <th>PREÇO</th>
+                <th>ESTOQUE</th>
+                <th>AÇÕES</th>
+            </tr>
+            </thead>
+            <tbody id="tabela-corpo">
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
-    // Função Principal que carrega tudo
-    async function carregarDashboard() {
+    // --- LÓGICA DO JAVASCRIPT ---
+    const API_URL = '/produtos';
+
+    async function carregarDados() {
         try {
-            // 1. Busca os dados no Java
-            const resposta = await fetch('/produtos');
-            const produtos = await resposta.json();
+            const res = await fetch(API_URL);
+            const produtos = await res.json();
 
-            // 2. Cálculos para os Cards (KPIs)
-            const totalItens = produtos.length;
-
-            // Soma: (Preço * Quantidade em Estoque) de cada produto
-            const valorPatrimonio = produtos.reduce((soma, p) => soma + (p.preco * p.estoque), 0);
-
-            // Filtro: Produtos com menos de 15 unidades
-            const produtosBaixoEstoque = produtos.filter(p => p.estoque < 15).length;
-
-            // 3. Atualiza a Tela (DOM)
-            document.getElementById('totalProdutos').innerText = totalItens;
-            document.getElementById('valorTotal').innerText = valorPatrimonio.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-            document.getElementById('estoqueBaixo').innerText = produtosBaixoEstoque;
-
-            // 4. Prepara dados para os Gráficos
-            // Vamos pegar só os 5 primeiros para o gráfico não ficar gigante
-            const top5 = produtos.slice(0, 5);
-            const nomes = top5.map(p => p.nomeComercial.split(' ')[0] + ' ' + p.marca); // Pega nome curto
-            const estoques = top5.map(p => p.estoque);
-            const precos = top5.map(p => p.preco);
-
-            // --- GRÁFICO 1: BARRAS (Estoque) ---
-            new Chart(document.getElementById('graficoEstoque'), {
-                type: 'bar',
-                data: {
-                    labels: nomes,
-                    datasets: [{
-                        label: 'Unidades',
-                        data: estoques,
-                        backgroundColor: '#3498db',
-                        borderRadius: 5
-                    }]
-                }
-            });
-
-            // --- GRÁFICO 2: DOUGHNUT (Preços) ---
-            new Chart(document.getElementById('graficoPreco'), {
-                type: 'doughnut',
-                data: {
-                    labels: nomes,
-                    datasets: [{
-                        label: 'Preço (R$)',
-                        data: precos,
-                        backgroundColor: ['#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#34495e']
-                    }]
-                }
-            });
-
+            atualizarTabela(produtos);
+            atualizarKPIs(produtos);
         } catch (erro) {
-            console.error("Erro ao carregar dashboard:", erro);
-            alert("Erro ao buscar dados. O servidor Java está rodando?");
+            console.error("Erro ao buscar:", erro);
         }
     }
 
-    // Inicia assim que abre a tela
-    carregarDashboard();
+    function atualizarKPIs(produtos) {
+        // 1. Total de Produtos
+        document.getElementById('kpiTotal').innerText = produtos.length;
+
+        // 2. Valor Total (Soma de Preço * Quantidade)
+        // Se quiser somar só o preço unitário, tire o "* p.estoque"
+        const totalValor = produtos.reduce((acc, p) => acc + (p.preco * p.estoque), 0);
+        document.getElementById('kpiValor').innerText = totalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // 3. Estoque Baixo (Menos de 5 unidades)
+        const baixoEstoque = produtos.filter(p => p.estoque < 5).length;
+        document.getElementById('kpiBaixo').innerText = baixoEstoque;
+    }
+
+    function atualizarTabela(produtos) {
+        const tbody = document.getElementById('tabela-corpo');
+        tbody.innerHTML = '';
+
+        produtos.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                    <td style="color:#888">#${p.id}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="width:30px; height:30px; background:#eee; border-radius:50%; overflow:hidden;">
+                                <img src="${p.fotoUrl || 'https://via.placeholder.com/30'}" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            ${p.nomeComercial}
+                        </div>
+                    </td>
+                    <td style="color: green; font-weight:bold;">R$ ${p.preco.toFixed(2)}</td>
+                    <td>
+                        <span style="padding: 4px 10px; border-radius: 12px; background: ${p.estoque < 5 ? '#ffebee' : '#e8f5e9'}; color: ${p.estoque < 5 ? '#c62828' : '#2e7d32'}; font-size: 12px;">
+                            ${p.estoque} un
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-delete" onclick="deletarProduto(${p.id})">
+                            <span class="material-icons" style="font-size:18px">delete</span>
+                        </button>
+                    </td>
+                `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    async function adicionarProduto() {
+        const nome = document.getElementById('nome').value;
+        const preco = document.getElementById('preco').value;
+        const estoque = document.getElementById('estoque').value;
+        const foto = document.getElementById('foto').value; // Novo campo
+
+        if (!nome || !preco || !estoque) {
+            alert("Preencha todos os campos obrigatórios!");
+            return;
+        }
+
+        const produto = {
+            nomeComercial: nome,
+            preco: parseFloat(preco),
+            estoque: parseInt(estoque),
+            fotoUrl: foto
+        };
+
+        await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(produto)
+        });
+
+        // Limpar campos
+        document.getElementById('nome').value = '';
+        document.getElementById('preco').value = '';
+        document.getElementById('estoque').value = '';
+        document.getElementById('foto').value = '';
+
+        carregarDados();
+    }
+
+    async function deletarProduto(id) {
+        if (confirm('Tem certeza que deseja apagar?')) {
+            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            carregarDados();
+        }
+    }
+
+    // Carregar ao iniciar
+    carregarDados();
 </script>
 
 </body>
