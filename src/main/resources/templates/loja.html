@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVNFCZ33G8"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-RVNFCZ33G8');
     </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rações & Cia - Loja Virtual</title>
@@ -17,79 +16,102 @@
     <style>
         :root {
             --cor-principal: #b30000;
+            --cor-escura: #800000;
             --cor-secundaria: #ffeb3b;
-            --cor-fundo: #f9f9f9;
+            --cor-fundo: #f4f7f6; /* Cinza bem clarinho moderno */
+            --sombra-card: 0 10px 20px rgba(0,0,0,0.08);
         }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--cor-fundo); }
+
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--cor-fundo); display: flex; flex-direction: column; min-height: 100vh; }
 
         /* CABEÇALHO */
-        header { background-color: var(--cor-principal); color: white; padding: 15px 0; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        header h1 { margin: 0; font-size: 28px; letter-spacing: 1px; text-transform: uppercase; }
-        header p { margin: 5px 0 0; font-size: 14px; opacity: 0.9; }
+        header { background: linear-gradient(135deg, var(--cor-escura), var(--cor-principal)); color: white; padding: 20px 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        header h1 { margin: 0; font-size: 32px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+        header p { margin: 5px 0 0; font-size: 14px; opacity: 0.9; font-weight: 300; }
 
-        /* BANNER */
+        /* BANNER HERO */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../static/banner.png'), var(--cor-principal);
-            background-size: cover; background-position: center; height: 350px;
-            display: flex; align-items: center; justify-content: center; text-align: center; color: white;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../static/banner.png');
+            background-color: var(--cor-principal); background-size: cover; background-position: center;
+            height: 300px; display: flex; align-items: center; justify-content: center; text-align: center; color: white;
+            border-bottom: 5px solid var(--cor-secundaria);
         }
-        .hero-content h2 { font-size: 42px; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-        .hero-content p { font-size: 18px; margin-top: 10px; }
+        .hero-content h2 { font-size: 38px; margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .hero-content button {
-            background-color: var(--cor-secundaria); color: #333; font-weight: bold; border: none; padding: 12px 35px; margin-top: 20px; font-size: 18px; border-radius: 50px; cursor: pointer; transition: 0.3s;
+            background-color: var(--cor-secundaria); color: #333; font-weight: bold; border: none; padding: 12px 40px; margin-top: 20px; font-size: 16px; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255, 235, 59, 0.4);
         }
-        .hero-content button:hover { transform: scale(1.05); }
+        .hero-content button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 235, 59, 0.6); }
 
-        /* VITRINE */
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .titulo-secao { text-align: center; color: #333; margin-bottom: 30px; font-size: 24px; border-bottom: 3px solid var(--cor-principal); display: inline-block; padding-bottom: 5px; }
-        .grid-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+        /* VITRINE & CARDS */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; flex: 1; }
+        .titulo-secao { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+        .titulo-secao h3 { font-size: 24px; color: #333; margin: 0; border-left: 5px solid var(--cor-principal); padding-left: 15px; }
 
-        /* CARD */
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; border: 1px solid #eee; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--cor-principal); }
-        .card-img { height: 220px; width: 100%; object-fit: cover; background-color: #eee; }
-        .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .card-title { font-size: 16px; font-weight: bold; margin: 5px 0; color: #333; }
-        .card-price { font-size: 24px; color: var(--cor-principal); font-weight: bold; margin-top: auto; }
+        .grid-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+
+        .card {
+            background: white; border-radius: 20px; overflow: hidden; border: none;
+            box-shadow: var(--sombra-card); transition: 0.3s; position: relative;
+            display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+
+        .card-img { height: 200px; width: 100%; object-fit: cover; background-color: #eee; }
+
+        /* Badge de Estoque */
+        .badge-estoque {
+            position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9);
+            padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 5px; }
+        .card-desc { font-size: 13px; color: #777; margin-bottom: 15px; }
+
+        .card-price { font-size: 28px; color: var(--cor-principal); font-weight: 800; margin-top: auto; }
+        .card-price span { font-size: 14px; font-weight: normal; color: #999; }
+
         .btn-comprar {
-            background-color: #25D366; color: white; border: none; padding: 12px; margin-top: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; transition: 0.2s;
+            background-color: #25D366; color: white; border: none; padding: 15px; margin-top: 15px;
+            border-radius: 12px; cursor: pointer; font-weight: bold; display: flex; align-items: center;
+            justify-content: center; gap: 10px; text-decoration: none; transition: 0.2s; font-size: 16px;
         }
         .btn-comprar:hover { background-color: #1ebe57; }
 
-        /* MODAL PEDIDO */
-        .modal-fundo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000; }
-        .modal-pedido { background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 450px; position: relative; }
-        .modal-pedido h2 { margin-top: 0; color: var(--cor-principal); }
+        /* RODAPÉ (FOOTER) */
+        footer { background-color: #222; color: #ddd; padding: 50px 0 20px; margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .footer-col h4 { color: white; margin-bottom: 20px; font-size: 18px; border-bottom: 2px solid var(--cor-principal); display: inline-block; padding-bottom: 5px; }
+        .footer-col p, .footer-col a { font-size: 14px; line-height: 1.6; color: #bbb; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer-col a:hover { color: var(--cor-secundaria); }
+        .copyright { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; font-size: 13px; color: #666; }
+
+        /* MODAIS E CHAT (Mantidos funcionais) */
+        .modal-fundo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .modal-pedido { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
         .form-grupo { margin-bottom: 15px; }
-        .form-grupo label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
-        .form-grupo input, .form-grupo select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .form-grupo label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; font-size: 14px; }
+        .form-grupo input, .form-grupo select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        .form-grupo input:focus { border-color: var(--cor-principal); }
 
         /* Botão de GPS */
-        .btn-gps { background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
-        .btn-gps:hover { background-color: #0056b3; }
-
-        .aviso-taxa { background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; font-size: 13px; margin-bottom: 15px; display: none; border: 1px solid #ffeeba; }
-        .btn-finalizar { background-color: #25D366; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        .btn-fechar-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
+        .btn-gps { background-color: #007bff; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center; }
+        .btn-finalizar { background-color: #25D366; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .btn-fechar-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
 
         /* CHATBOT */
         .btn-chat-flutuante { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 32px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: none; z-index: 1000; transition: transform 0.2s; }
+        .janela-chat { position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); display: none; flex-direction: column; overflow: hidden; z-index: 1000; border: 1px solid #eee; }
+        .chat-header { background: linear-gradient(135deg, var(--cor-escura), var(--cor-principal)); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex: 1; padding: 20px; overflow-y: auto; background-color: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .mensagem { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.5; }
+        .msg-robo { background-color: white; color: #333; border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .msg-cliente { background-color: var(--cor-principal); color: white; border-bottom-right-radius: 4px; box-shadow: 0 2px 5px rgba(179, 0, 0, 0.3); margin-left: auto; }
+        .chat-footer { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-footer input { flex: 1; padding: 12px; border: 1px solid #eee; border-radius: 25px; outline: none; background: #f5f5f5; }
+        .chat-footer button { background-color: var(--cor-principal); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .janela-chat {
-            position: fixed; bottom: 100px; right: 30px; width: 360px; height: auto; max-height: 70vh;
-            background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; overflow: hidden; z-index: 1000; border: 1px solid #ddd;
-        }
-
-        .chat-header { background: linear-gradient(135deg, #800000, #b30000); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background-color: #f5f5f5; display: flex; flex-direction: column; gap: 10px; }
-        .mensagem { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.5; position: relative; }
-        .msg-robo { background-color: white; color: #333; border-bottom-left-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); align-self: flex-start; }
-        .msg-cliente { background-color: var(--cor-principal); color: white; border-bottom-right-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); margin-left: auto; align-self: flex-end; }
-        .chat-footer { padding: 12px; background: white; border-top: 1px solid #eee; display: flex; gap: 8px; flex-shrink: 0; }
-        .chat-footer input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
-        .chat-footer button { background-color: var(--cor-principal); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -101,23 +123,53 @@
 
 <div class="hero">
     <div class="hero-content">
-        <h2>Tudo para seu Pet</h2>
-        <p>Rações, acessórios e muito mais com entrega rápida!</p>
+        <h2>O melhor para seu Pet</h2>
+        <p>Rações, acessórios e muito mais.</p>
         <button onclick="document.querySelector('.container').scrollIntoView({behavior: 'smooth'})">Ver Ofertas</button>
     </div>
 </div>
 
 <div class="container">
-    <div style="text-align: center;"><div class="titulo-secao">Destaques da Loja</div></div>
+    <div class="titulo-secao">
+        <span class="material-icons" style="color: var(--cor-principal); font-size: 30px;">local_offer</span>
+        <h3>Destaques da Semana</h3>
+    </div>
+
     <div class="grid-produtos" id="vitrine">
-        <p style="text-align: center; width: 100%; color: #777;">Carregando produtos do banco...</p>
+        <p style="text-align: center; width: 100%; color: #777;">Carregando vitrine...</p>
     </div>
 </div>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Sobre Nós</h4>
+            <p>A Rações & Cia é apaixonada por animais. Entregamos qualidade e carinho na porta da sua casa.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Links Rápidos</h4>
+            <a href="#">Início</a>
+            <a href="#">Minha Conta</a>
+            <a href="#">Rastrear Pedido</a>
+            <a href="/admin">Acesso Administrativo</a>
+        </div>
+        <div class="footer-col">
+            <h4>Contato</h4>
+            <p>📞 (69) 99923-8473</p>
+            <p>📧 contato@racoesecia.com</p>
+            <p>📍 Ji-Paraná, RO</p>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2025 Rações & Cia. Todos os direitos reservados.
+    </div>
+</footer>
 
 <div id="modalPedido" class="modal-fundo">
     <div class="modal-pedido">
         <button class="btn-fechar-modal" onclick="fecharPedido()">✖</button>
-        <h2>📝 Finalizar Pedido</h2>
+        <h2 style="color: var(--cor-principal); margin-top:0;">📝 Finalizar Compra</h2>
+        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Você será redirecionado para o WhatsApp do vendedor.</p>
 
         <div class="form-grupo"><label>Seu Nome:</label><input type="text" id="cliNome"></div>
 
@@ -130,17 +182,14 @@
         </div>
 
         <div id="areaEndereco" style="display: none;">
-            <div class="aviso-taxa">⚠️ Taxa de entrega a combinar no WhatsApp.</div>
-
             <button class="btn-gps" onclick="pegarLocalizacao()">
-                <span class="material-icons" style="font-size:16px">my_location</span> Enviar minha localização atual
+                <span class="material-icons">my_location</span> Usar minha localização atual
             </button>
-
             <div class="form-grupo"><label>Bairro:</label><input type="text" id="cliBairro"></div>
-            <div class="form-grupo"><label>Endereço / Ponto de Ref.:</label><input type="text" id="cliEndereco"></div>
+            <div class="form-grupo"><label>Ponto de Referência:</label><input type="text" id="cliEndereco"></div>
         </div>
 
-        <button class="btn-finalizar" onclick="enviarZap()">✅ Enviar Pedido no Zap</button>
+        <button class="btn-finalizar" onclick="enviarZap()">✅ Enviar Pedido no WhatsApp</button>
     </div>
 </div>
 
@@ -148,28 +197,32 @@
 <div class="janela-chat" id="janelaChat">
     <div class="chat-header">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 24px;">🤖</span>
-            <div><h3 style="margin: 0; font-size: 16px;">Assistente IA</h3></div>
+            <span class="material-icons">smart_toy</span>
+            <h3 style="margin: 0; font-size: 16px;">Assistente Virtual</h3>
         </div>
         <span style="cursor: pointer; font-size: 20px;" onclick="toggleChat()">✖</span>
     </div>
+
     <div class="chat-body" id="chatBody">
-        <div class="mensagem msg-robo">Olá! 👋 Sou o assistente inteligente.<br>Digite o nome de uma ração (mesmo errado) que eu encontro!</div>
+        <div class="mensagem msg-robo">
+            Olá! 👋 Bem-vindo à Rações & Cia.<br>
+            Posso consultar preços e estoque para você.<br>
+            <b>Qual produto você procura?</b>
+        </div>
     </div>
+
     <div class="chat-footer">
-        <input type="text" id="inputMsg" placeholder="Ex: pedgre..." onkeypress="if(event.key==='Enter') enviarMensagem()">
-        <button onclick="enviarMensagem()">➤</button>
+        <input type="text" id="inputMsg" placeholder="Digite aqui..." onkeypress="if(event.key==='Enter') enviarMensagem()">
+        <button onclick="enviarMensagem()"><span class="material-icons">send</span></button>
     </div>
 </div>
 
 <script>
-    // ⚠️ Configure seu telefone aqui
     const TELEFONE = "5569992384732";
-
     let produtoSelecionado = null;
     let linkMapa = "";
 
-    // --- LÓGICA DO PEDIDO ---
+    // --- FUNÇÕES DE PEDIDO ---
     function abrirPedido(nome, preco) {
         produtoSelecionado = { nome, preco };
         document.getElementById('modalPedido').style.display = 'flex';
@@ -178,83 +231,75 @@
     function fecharPedido() { document.getElementById('modalPedido').style.display = 'none'; }
 
     function mudarTipoEntrega() {
-        document.getElementById('areaEndereco').style.display = (document.getElementById('cliTipo').value === 'entregar') ? 'block' : 'none';
+        const tipo = document.getElementById('cliTipo').value;
+        document.getElementById('areaEndereco').style.display = (tipo === 'entregar') ? 'block' : 'none';
     }
 
-    // --- FUNÇÃO DE PEGAR LOCALIZAÇÃO (GPS) ---
     function pegarLocalizacao() {
-        if (!navigator.geolocation) {
-            alert("Seu navegador não suporta localização.");
-            return;
-        }
+        if (!navigator.geolocation) { alert("Seu navegador não suporta GPS."); return; }
         const btn = document.querySelector('.btn-gps');
-        btn.innerHTML = "⏳ Pegando localização...";
+        btn.innerHTML = "⏳ Aguarde...";
 
         navigator.geolocation.getCurrentPosition(
-            (posicao) => {
-                const lat = posicao.coords.latitude;
-                const lon = posicao.coords.longitude;
-                linkMapa = `https://maps.google.com/?q=${lat},${lon}`;
-
+            (pos) => {
+                linkMapa = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
                 document.getElementById('cliEndereco').value = "📍 Localização capturada pelo GPS";
                 btn.innerHTML = "✅ Localização Salva!";
                 btn.style.backgroundColor = "#28a745";
             },
-            (erro) => {
-                alert("Ative o GPS do celular ou permita o acesso.");
-                btn.innerHTML = "❌ Erro ao pegar";
-            }
+            () => { alert("Erro ao pegar GPS."); btn.innerHTML = "❌ Tentar novamente"; }
         );
     }
 
     function enviarZap() {
         const nome = document.getElementById('cliNome').value;
-        const tipo = document.getElementById('cliTipo').value;
         if(!nome) { alert('Digite seu nome'); return; }
 
         let msg = `Olá! Quero comprar:\n📦 *${produtoSelecionado.nome}*\n💰 R$ ${produtoSelecionado.preco}\n👤 *Cliente:* ${nome}\n`;
 
-        if (tipo === 'entregar') {
+        if (document.getElementById('cliTipo').value === 'entregar') {
             msg += `🚚 Entrega no Bairro: ${document.getElementById('cliBairro').value}\n`;
-            if(linkMapa) {
-                msg += `📍 *Link do GPS:* ${linkMapa}\n`;
-            }
-            msg += `🏠 *Endereço:* ${document.getElementById('cliEndereco').value}\n`;
+            if(linkMapa) msg += `📍 GPS: ${linkMapa}\n`;
+            msg += `🏠 Ref: ${document.getElementById('cliEndereco').value}\n`;
         } else {
             msg += `🏃 Vou Retirar na Loja`;
         }
-
         window.open(`https://wa.me/${TELEFONE}?text=${encodeURIComponent(msg)}`, '_blank');
         fecharPedido();
     }
 
-    // --- CARREGAR VITRINE (Busca do Java) ---
+    // --- CARREGAR VITRINE ---
     async function carregarVitrine() {
         try {
-            // Chama o endpoint padrao que lista tudo
             const res = await fetch('/produtos');
             const produtos = await res.json();
-
             const vitrine = document.getElementById('vitrine');
-            if(produtos.length === 0) { vitrine.innerHTML = '<p style="text-align:center; width:100%">Nenhum produto cadastrado no banco ainda.</p>'; return; }
+
+            if(produtos.length === 0) {
+                vitrine.innerHTML = '<p style="text-align:center; width:100%">Estoque vazio no momento.</p>';
+                return;
+            }
 
             vitrine.innerHTML = produtos.map(p => `
                 <div class="card">
+                    <div class="badge-estoque">${p.estoque > 5 ? 'Em Estoque' : 'Poucas Unidades'}</div>
                     <img src="https://via.placeholder.com/300x200?text=${p.nomeComercial.split(' ')[0]}" class="card-img">
                     <div class="card-body">
                         <div class="card-title">${p.nomeComercial}</div>
-                        <div class="card-price">R$ ${p.preco.toFixed(2)}</div>
-                        <button onclick="abrirPedido('${p.nomeComercial}', '${p.preco.toFixed(2)}')" class="btn-comprar">🛒 Comprar</button>
+                        <div class="card-desc">Marca: ${p.marca || 'Geral'}</div>
+                        <div class="card-price"><span>R$</span> ${p.preco.toFixed(2)}</div>
+                        <button onclick="abrirPedido('${p.nomeComercial}', '${p.preco.toFixed(2)}')" class="btn-comprar">
+                            <span class="material-icons">shopping_cart</span> COMPRAR AGORA
+                        </button>
                     </div>
                 </div>`).join('');
         } catch (e) {
             console.error(e);
-            document.getElementById('vitrine').innerHTML = '<p style="color:red; text-align:center">Erro ao conectar com o Servidor Java.<br>Verifique se deu Play no IntelliJ.</p>';
         }
     }
     carregarVitrine();
 
-    // --- CHATBOT COM INTELIGÊNCIA ARTIFICIAL (Java) ---
+    // --- CHATBOT ---
     function toggleChat() {
         const chat = document.getElementById('janelaChat');
         chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
@@ -275,28 +320,19 @@
         addMsg(txt, 'msg-cliente');
         inp.value = '';
 
-        // 1. EDUCAÇÃO: Se for oi/olá, responde na hora sem ir no banco 🎓
-        const saudacoes = ['oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite', 'eai', 'opa', 'tudo bem'];
-        // Verifica se a mensagem É uma saudação ou CONTÉM uma saudação e é curta
+        // Resposta rápida para saudação
+        const saudacoes = ['oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite'];
         if (saudacoes.some(s => txt.toLowerCase().includes(s)) && txt.length < 20) {
-            setTimeout(() => {
-                addMsg("Olá! 👋 Sou o assistente da Rações & Cia.<br>Estou aqui para buscar produtos.<br><br>Tente digitar: <b>Pedigree</b> ou <b>Sachê</b>", 'msg-robo');
-            }, 600);
-            return; // Para aqui! Não incomoda o banco com "Bom dia".
+            setTimeout(() => addMsg("Olá! 👋 Digite o nome do produto que procura.", 'msg-robo'), 600);
+            return;
         }
 
-        addMsg('🔍 Procurando...', 'msg-robo');
-
         try {
-            // Se NÃO for saudação, vai no Java buscar o produto
             const res = await fetch(`/produtos/buscar?nome=${txt}`);
             const respostaTexto = await res.text();
-
-            document.querySelector('.mensagem:last-child').remove();
             addMsg(respostaTexto.replace(/\n/g, "<br>"), 'msg-robo');
-
         } catch(e) {
-            addMsg('Erro ao conectar com a IA.', 'msg-robo');
+            addMsg('❌ Erro de conexão.', 'msg-robo');
         }
     }
 </script>
