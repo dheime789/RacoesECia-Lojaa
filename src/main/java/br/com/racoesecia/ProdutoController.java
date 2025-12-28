@@ -29,19 +29,25 @@ public class ProdutoController {
         repository.deleteById(id);
     }
 
-    // 4. BUSCA INTELIGENTE (IA) 🧠
-    // Teste no navegador: http://localhost:8080/produtos/buscar?nome=pedigre
+    // 4. BUSCA INTELIGENTE (IA) COM BOTÃO DE COMPRA 🛒
     @GetMapping("/buscar")
     public String buscarPorNome(@RequestParam String nome) {
-        // Aqui chamamos o método AUTOMÁTICO do Repository!
+
         Produto produto = repository.findFirstByNomeComercialContainingIgnoreCase(nome);
 
         if (produto != null) {
-            return "✅ Encontrei: " + produto.getNomeComercial() +
-                    " | 💰 Preço: R$ " + produto.getPreco() +
-                    " | 📦 Estoque: " + produto.getEstoque();
+            // AQUI ESTÁ A MÁGICA: Criamos o botão HTML dentro do Java
+            // Esse botão chama a função 'abrirPedido' que já existe no seu site
+            String botaoCompra = "<br><button onclick=\"abrirPedido('" + produto.getNomeComercial() + "', '" + produto.getPreco() + "')\" " +
+                    "style=\"background-color:#25D366; color:white; border:none; padding:10px 20px; margin-top:10px; border-radius:20px; cursor:pointer; font-weight:bold; width:100%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);\">" +
+                    "🛒 COMPRAR AGORA</button>";
+
+            return "✅ Encontrei: <b>" + produto.getNomeComercial() + "</b><br>" +
+                    "💰 Preço: R$ " + produto.getPreco() + "<br>" +
+                    "📦 Estoque: " + produto.getEstoque() + " un" +
+                    botaoCompra;
         } else {
-            return "❌ Poxa, não encontrei nada parecido com '" + nome + "'.";
+            return "❌ Poxa, não encontrei nada parecido com '" + nome + "'. Tente digitar apenas uma parte do nome (ex: 'sache').";
         }
     }
 }
