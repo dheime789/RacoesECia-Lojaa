@@ -33,8 +33,8 @@ public class ProdutoController {
     // Teste no navegador: http://localhost:8080/produtos/buscar?nome=pedigre
     @GetMapping("/buscar")
     public String buscarPorNome(@RequestParam String nome) {
-        // Aqui chamamos o método novo do Repository!
-        Produto produto = repository.buscarProdutoInteligente(nome);
+        // Aqui chamamos o método AUTOMÁTICO do Repository!
+        Produto produto = repository.findFirstByNomeComercialContainingIgnoreCase(nome);
 
         if (produto != null) {
             return "✅ Encontrei: " + produto.getNomeComercial() +
